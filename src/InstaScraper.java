@@ -1,22 +1,52 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class InstaScraper {
-    public static void main(String[] args) {
-        String cookiePath = "C:\\Users\\zoya\\Documents\\WhaleFood\\api\\cookies.txt";
-        String archivePath = "C:\\Users\\zoya\\Documents\\WhaleFood\\api\\gallery-archive.db";
-        String userProfileURL = "https://www.instagram.com/zoyaa_b";
+    // user related
+    private String username;
+    private String userProfileURL;
 
-        List<String> instaCommands = Arrays.asList("gallery-dl",
-                "--cookies", cookiePath, "--download-archive", archivePath,
+    //paths
+    private final String archivePath = "C:\\Users\\zoya\\Documents\\WhaleFood\\api\\gallery-archive.db";
+    private String cookiesURL;
+
+    // basic api command through CLI
+    private List<String> basicCommand;
+
+
+    public InstaScraper() {
+        username = "";
+        cookiesURL = "C:\\Users\\zoya\\Documents\\WhaleFood\\api\\cookies.txt";
+        basicCommand = new ArrayList<>();
+    }
+    public InstaScraper(String user) {
+        cookiesURL = "C:\\Users\\zoya\\Documents\\WhaleFood\\api\\cookies.txt";
+        username = user;
+        userProfileURL = "https://www.instagram.com/" + user;
+
+        basicCommand = Arrays.asList("gallery-dl",
+                "--cookies", cookiesURL, "--download-archive", archivePath,
                 userProfileURL);
+    }
 
-        runCL(instaCommands);
+    public void pullFromInsta() {
+        runCL(basicCommand);
 
     }
+//    TODO: public void pullFromInsta(String cursorPos);
+
+
+
+    public static void main(String[] args) {
+        InstaScraper scrap = new InstaScraper("zoyaa_b");
+        scrap.pullFromInsta();
+
+    }
+
 
     public static void runCL(List<String> command) {
         try {
