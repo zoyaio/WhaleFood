@@ -60,7 +60,7 @@ public class ChatGPT {
 
     public static void main(String[] args) {
 
-        System.out.println(chatGPT("hello, how are you? Can you tell me what's a Fibonacci Number?")); // TODO: change prompt
+//        System.out.println(chatGPT("hello, how are you? Can you tell me what's a Fibonacci Number?")); // TODO: change prompt
 
     }
 }
