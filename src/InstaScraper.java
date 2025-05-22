@@ -28,9 +28,12 @@ public class InstaScraper {
         username = user;
         userProfileURL = "https://www.instagram.com/" + user;
 
+        // for insta specific options, need to append them to -o
         basicCommand = Arrays.asList("gallery-dl",
                 "--cookies", cookiesURL, "--download-archive", archivePath,
-                userProfileURL);
+                "-o", "include=stories,highlights,posts", "-o", "order-posts=asc", "-o", "videos=false",  userProfileURL);
+
+        // --include "stories,highlights,posts"    --order-posts "asc" --videos false
     }
 
     public void pullFromInsta() {
