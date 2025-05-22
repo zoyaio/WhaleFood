@@ -28,43 +28,54 @@ public class InstaScraper {
         username = user;
         userProfileURL = "https://www.instagram.com/" + user;
 
-        // for insta specific options, need to append them to -o
+        // basic command to call Gallery-dl API
+        // note: for insta specific options, need to append them to -o
         basicCommand = Arrays.asList("gallery-dl",
                 "--cookies", cookiesURL, "--download-archive", archivePath,
                 "-o", "include=stories,highlights,posts", "-o", "order-posts=asc", "-o", "videos=false",  userProfileURL);
 
-        // --include "stories,highlights,posts"    --order-posts "asc" --videos false
     }
 
+    /**
+     * Method that updates username folder with any new posts,stories,or highlights.
+     * You can rerun this method as much as you like, it won't delete anything it just adds to the folder
+     */
     public void pullFromInsta() {
         runCL(basicCommand);
 
     }
+
+
 //    TODO: public void pullFromInsta(String cursorPos);
 
-
-
     public static void main(String[] args) {
+        // TODO this is where you create the scraper object for the user
         InstaScraper scrap = new InstaScraper("zoyaa_b");
+
+        // updates the zoyaa_b folder with any new images/stories I posted
         scrap.pullFromInsta();
 
     }
 
 
+    /**
+     * Helper method to execute commands in terminal and prints the result
+     * @param command List of args + parameters for the call
+     */
     public static void runCL(List<String> command) {
         try {
-            // Example command: ls -l (or use "cmd.exe", "/c", "dir" on Windows)
-//            List<String> command = Arrays.asList("bash", "-c", "ls -l");
+            // A builder that constructs a command-line call
             ProcessBuilder builder = new ProcessBuilder(command);
             builder.redirectErrorStream(true);  // Merge stdout and stderr
 
-            Process process = builder.start();
+            Process process = builder.start(); // executes the command
 
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(process.getInputStream())
             );
 
             String line;
+            // basically prints out every line of the command line output after its done running
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
