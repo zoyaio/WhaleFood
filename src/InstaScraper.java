@@ -50,7 +50,7 @@ public class InstaScraper {
 
     public static void main(String[] args) {
         // TODO this is where you create the scraper object for the user
-        InstaScraper scrap = new InstaScraper("zoyaa_b");
+        InstaScraper scrap = new InstaScraper("gayeonso_");
 
         // updates the zoyaa_b folder with any new images/stories I posted
         scrap.pullFromInsta();
