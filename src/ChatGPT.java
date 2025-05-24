@@ -2,6 +2,8 @@
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatGPT {
 
@@ -58,9 +60,44 @@ public class ChatGPT {
 
     }
 
+
+
     public static void main(String[] args) {
 
-//        System.out.println(chatGPT("hello, how are you? Can you tell me what's a Fibonacci Number?")); // TODO: change prompt
+        // take image url csv file
+        String imageURLs = "imageUrls.csv";
+        String chatGPTresponses = "chatGPTresponses.csv";
 
+        List<String> prompts = new ArrayList<>();
+
+        // read img urls from csv
+        try (BufferedReader br = new BufferedReader(new FileReader(imageURLs))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String clean = line.trim().replaceAll("^\"|\"$", ""); // remove quotes if any
+                if (!clean.isEmpty()) {
+                    prompts.add(clean);
+                }
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Error reading input CSV: " + e.getMessage());
+            return;
+        }
+
+        // feed each url into chatgpt and store the responses into the new csv file for chatgptresponses
+        try (FileWriter csvWriter = new FileWriter(chatGPTresponses, true)) {
+            for (String prompt : prompts) {
+                String response = chatGPT(prompt);
+                System.out.println("ChatGPT response: " + response);
+                String sanitized = "\"" + response.replace("\"", "\"\"") + "\"";
+                csvWriter.append(sanitized).append(","); // comma-separated
+            }
+            csvWriter.append("\n"); // separate each batch
+        } catch (IOException e) {
+            System.out.println("Error writing to output CSV: " + e.getMessage());
+        }
     }
+
+
 }
