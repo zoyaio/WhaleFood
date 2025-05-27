@@ -66,8 +66,20 @@ public class ChatGPT {
         String chatGPTresponses = "chatGPTresponses.csv";
         List<String> prompts = new ArrayList<>();
 
+        // website object for pi questions and user info
+        Website security = new Website();
+        String userInfo = security.userInfo();
+
+
+
         // prompt chatgpt to analyze instagram photo for PI
-        System.out.println(chatGPT("Analyze the photo for any personal information and format your response by naming the type of information, followed by a colon, and then the information and then go the next line. For example, Location: xxx Name: xxx"));
+        System.out.println(chatGPT("Analyze the following images, looking for answers to the given security questions " +
+                "and corresponding answers. If you were able to make an approximation or guess that you believe could be accurate" +
+                " to any of the questions that matches at least somewhat with the provided answer, " +
+                "output the question that you could answer with your approximate answer, in the following example format: " +
+                "Q5: What's your high school best friend's name?\n " +
+                "A5: Based on these (insert specific features) found in this image (insert image url), the answers is (insert name).\n" +
+                "These are the provided questions/answers: " + userInfo));
 
         // read img urls from csv
         try (BufferedReader br = new BufferedReader(new FileReader(imageURLS))) {
