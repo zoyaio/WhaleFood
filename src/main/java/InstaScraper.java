@@ -144,9 +144,18 @@ public class InstaScraper {
 
     public static void main(String[] args) {
 
-        // create website object to get the username from Website
-        Website instaName = new Website();
-        String nameUser = instaName.instagramUser();
+        // placeholder for username (to be found in Website)
+        String nameUser;
+
+        // if user given use, if not don't
+        if (args.length > 0 && !args[0].isEmpty()) {
+            nameUser = args[0];
+            System.out.println("Using provided username: " + nameUser);
+        } else {
+            // create website object to get the username from Website
+            Website instaName = new Website();
+            nameUser = instaName.instagramUser();
+        }
 
         // Create the scraper object for the user
         InstaScraper scrap = new InstaScraper(nameUser);

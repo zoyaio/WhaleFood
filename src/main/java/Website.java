@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class Website {
     // store user answers
@@ -12,18 +13,70 @@ public class Website {
     }
 
     public static void main(String[] args) {
-
         Scanner scan = new Scanner(System.in);
-
         Website website = new Website();
 
         System.out.println("\nYour private information: ");
         System.out.println(website.userInfo());
-        // after this, we run the chatgpt class to get the necessary info stored in the csv file, then just print the csv file
 
-        System.out.println("We've found that your information is at risk of leaking answers to the following common security questions based on " +
-                "image analysis of your instagram profile. ");
+        // instascraper run
+        System.out.println("\nStarting Instagram scraping process...");
+        String[] argument = {website.getInstaUser()}; // Pass username as argument
+        InstaScraper.main(argument);
 
+        // run chatGPT stuff
+        System.out.println("\nStarting AI analysis of your images...");
+        ChatGPT chatGPT = new ChatGPT();
+
+        // main method of chatgpt thing for csv file
+        website.runChatGPTAnalysis();
+
+        // print csv file related stuff
+        System.out.println("\nWe've found that your information is at risk of leaking answers to the following common security questions based on " +
+                "image analysis of your instagram profile.");
+
+        // print csv file actually forreal this time
+        website.displayAnalysisResults();
+    }
+
+    /**
+     * Run ChatGPT analysis by calling the main method logic from ChatGPT class
+     */
+    private void runChatGPTAnalysis() {
+        // Simply call the main method from ChatGPT class which handles everything
+        String[] args = {}; // Empty args array
+        ChatGPT.main(args);
+    }
+
+    /**
+     * Display the analysis results from the CSV file
+     */
+    private void displayAnalysisResults() {
+        String chatGPTresponses = "chatGPTresponses.csv";
+        try (BufferedReader br = new BufferedReader(new FileReader(chatGPTresponses))) {
+            String line;
+            System.out.println("\n=== SECURITY ANALYSIS RESULTS ===");
+            while ((line = br.readLine()) != null) {
+                // Parse and display the responses
+                String[] responses = line.split("\",\"");
+                for (String response : responses) {
+                    String cleaned = response.replaceAll("^\"|\"$", "").replace("\"\"", "\"");
+                    if (!cleaned.trim().isEmpty()) {
+                        System.out.println("- " + cleaned);
+                        System.out.println();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Could not read analysis results: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Getter method for Instagram username
+     */
+    public String getInstaUser() {
+        return instaUser;
     }
 
     public String instagramUser() {
@@ -42,7 +95,6 @@ public class Website {
         StringBuilder answers = new StringBuilder();
 
         System.out.println("Please answer the following security questions:");
-
 
         // questions in an array
         String[] questions = getSecQuestionsArray();
@@ -125,7 +177,6 @@ public class Website {
                 "Who was your childhood best friend?"
         };
     }
-
 
     /**
      * Method to get a specific answer by question number
