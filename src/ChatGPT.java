@@ -66,6 +66,9 @@ public class ChatGPT {
         String chatGPTresponses = "chatGPTresponses.csv";
         List<String> prompts = new ArrayList<>();
 
+        // prompt chatgpt to analyze instagram photo for PI
+        System.out.println(chatGPT("Analyze the photo for any personal information and format your response by naming the type of information, followed by a colon, and then the information and then go the next line. For example, Location: xxx Name: xxx"));
+
         // read img urls from csv
         try (BufferedReader br = new BufferedReader(new FileReader(imageURLS))) {
             String line;
