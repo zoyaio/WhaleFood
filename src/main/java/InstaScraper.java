@@ -143,8 +143,13 @@ public class InstaScraper {
     }
 
     public static void main(String[] args) {
+
+        // create website object to get the username from Website
+        Website instaName = new Website();
+        String nameUser = instaName.instagramUser();
+
         // Create the scraper object for the user
-        InstaScraper scrap = new InstaScraper("zoyaa_b");
+        InstaScraper scrap = new InstaScraper(nameUser);
 
         // First, update the folder with any new images/stories
         scrap.pullFromInsta();

@@ -3,13 +3,17 @@ import java.util.*;
 public class Website {
     // store user answers
     private String userAnswers;
+    private String instaUser;
 
     // initialize class + user input
     public Website() {
         collectUserInput();
+        instagramUser();
     }
 
     public static void main(String[] args) {
+
+        Scanner scan = new Scanner(System.in);
 
         Website website = new Website();
 
@@ -17,6 +21,17 @@ public class Website {
         System.out.println(website.userInfo());
         // after this, we run the chatgpt class to get the necessary info stored in the csv file, then just print the csv file
 
+        System.out.println("We've found that your information is at risk of leaking answers to the following common security questions based on " +
+                "image analysis of your instagram profile. ");
+
+    }
+
+    public String instagramUser() {
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("What is your instagram username?");
+        instaUser = scan.next();
+        return instaUser;
     }
 
     /**
