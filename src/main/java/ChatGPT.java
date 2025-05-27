@@ -10,7 +10,7 @@ public class ChatGPT {
     public static String chatGPT(String prompt) {
         // constants
         String url = "https://api.openai.com/v1/chat/completions"; // TODO: pick endpoint
-        String apiKey = "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"; // TODO: API key
+        String apiKey = "";
         String model = "gpt-3.5-turbo"; // TODO: pick model
 
         try {
