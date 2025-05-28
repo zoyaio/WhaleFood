@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatGPT {
-    private static String url = "https://api.openai.com/v1/responses"; // TODO: pick endpoint
-    private static String apiKey = "";
-    private static String model = "gpt-4.1-mini"; // TODO: pick model
+    private static String url = "https://api.openai.com/v1/responses";
+    private static String apiKey = "";// TODO
+    private static String model = "gpt-4.1-mini";
 
     private static class Pair {
         public String promptString;
