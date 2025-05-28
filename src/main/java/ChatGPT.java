@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ChatGPT {
     private static String url = "https://api.openai.com/v1/responses"; // TODO: pick endpoint
-    private static String apiKey = "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";
+    private static String apiKey = "";
     private static String model = "gpt-4.1-mini"; // TODO: pick model
 
     private static class Pair {
