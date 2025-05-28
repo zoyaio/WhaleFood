@@ -10,6 +10,10 @@ public class Website {
     public Website() {
         collectUserInput();
         instagramUser();
+
+        private boolean isValidHandle(String handle) {
+            return handle != null && handle.matches("^[a-zA-Z0-9._]+$");
+        }
     }
 
     public static void main(String[] args) {
@@ -82,8 +86,19 @@ public class Website {
     public String instagramUser() {
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("What is your instagram username?");
-        instaUser = scan.next();
+        while (true) {
+            System.out.println("What is your Instagram username?");
+            instaUser = scan.next();
+
+            if (instaUser == null || instaUser.trim().isEmpty()) {
+                System.out.println("Error: Instagram handle cannot be empty.\n");
+            } else if (!isValidHandle(instaUser)) {
+                System.out.println("Error: Invalid handle. Only letters, numbers, dots, and underscores are allowed.\n");
+            } else {
+                break;  // valid input
+            }
+        }
+
         return instaUser;
     }
 
