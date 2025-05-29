@@ -181,6 +181,16 @@ public class ChatGPT {
         // file initializations
         String imageURLS = "imageUrls.csv";
         String chatGPTresponses = "chatGPTresponses.csv";
+
+        // clear chatgpt csv file
+        try {
+            FileWriter clearWriter = new FileWriter(chatGPTresponses, false); // false = overwrite mode
+            clearWriter.close(); // This creates an empty file
+            System.out.println("Cleared " + chatGPTresponses);
+        } catch (IOException e) {
+            System.out.println("Error clearing " + chatGPTresponses + ": " + e.getMessage());
+        }
+
         List<Pair> prompts = new ArrayList<>();
 
         // website object for pi questions and user info

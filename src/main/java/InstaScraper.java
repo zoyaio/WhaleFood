@@ -75,7 +75,8 @@ public class InstaScraper {
         Configuration config = new Configuration(IMAGEKIT_PUBLIC_KEY, IMAGEKIT_PRIVATE_KEY, IMAGEKIT_URL_ENDPOINT);
         imageKit.setConfig(config);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputCsvPath))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputCsvPath, false))) {
+            System.out.println("CSV file cleared for new instagram profile!");
             for (File imageFile : imageFiles) {
                 String webUrl = uploadToImageKit(imageKit, imageFile);
 

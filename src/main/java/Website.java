@@ -8,7 +8,6 @@ public class Website {
 
     // initialize class + user input
     public Website() {
-        collectUserInput();
         instagramUser();
 
 
@@ -21,6 +20,8 @@ public class Website {
         Scanner scan = new Scanner(System.in);
         Website website = new Website();
 
+        // get user info
+        website.collectUserInput();
         System.out.println("\nYour private information: ");
         System.out.println(website.userInfo());
 
