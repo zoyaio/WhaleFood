@@ -8,9 +8,6 @@ public class Website {
 
     // initialize class + user input
     public Website() {
-        instagramUser();
-
-
     }
 
     private boolean isValidHandle(String handle) {
@@ -22,20 +19,24 @@ public class Website {
 
         // get user info
         website.collectUserInput();
+        website.instagramUser();
+
         System.out.println("\nYour private information: ");
         System.out.println(website.userInfo());
 
         // instascraper run
         System.out.println("\nStarting Instagram scraping process...");
-        String[] argument = {website.getInstaUser()}; // Pass username as argument
-        InstaScraper.main(argument);
+        String[] argument = {website.getInstaUser()}; // this is obsolete but worried something might break if i take it out
+        InstaScraper.main(argument, website.getInstaUser());
 
         // run chatGPT stuff
         System.out.println("\nStarting AI analysis of your images...");
         ChatGPT chatGPT = new ChatGPT();
 
         // main method of chatgpt thing for csv file
-        website.runChatGPTAnalysis();
+        String[] argu = {}; // Empty args array
+        String responses = website.userInfo();
+        ChatGPT.main(argu, responses);
 
         // print csv file related stuff
         System.out.println("\nWe've found that your information is at risk of leaking answers to the following common security questions based on " +
@@ -45,14 +46,7 @@ public class Website {
         website.displayAnalysisResults();
     }
 
-    /**
-     * Run ChatGPT analysis by calling the main method logic from ChatGPT class
-     */
-    private void runChatGPTAnalysis() throws IOException {
-        // Simply call the main method from ChatGPT class which handles everything
-        String[] args = {}; // Empty args array
-        ChatGPT.main(args);
-    }
+
 
     /**
      * Display the analysis results from the CSV file

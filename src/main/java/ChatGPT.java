@@ -172,7 +172,7 @@ public class ChatGPT {
         return extractedText;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args, String userInfo) throws IOException {
 
 
         String basePrompt = "Analyze the following images, looking for answers to the given security questions and corresponding answers. If you were able to make an approximation or guess that you believe could be accurate to any of the questions that matches at least somewhat with the provided answer, output the question that you could answer with your approximate answer, in the following example format: Q5: What's your high school best friend's name?\\nA5: Based on these (insert specific features) found in this image (insert image url), the answer is (insert name).\\nIf you can't discern anything, please just return 'N/A'. \\nThese are the provided questions/answers: ";
@@ -193,9 +193,7 @@ public class ChatGPT {
 
         List<Pair> prompts = new ArrayList<>();
 
-        // website object for pi questions and user info
-        Website security = new Website();
-        String userInfo = security.userInfo();
+
 
         // read img urls from csv
         try (BufferedReader br = new BufferedReader(new FileReader(imageURLS))) {
