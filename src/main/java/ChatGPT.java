@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ChatGPT {
     private static String url = "https://api.openai.com/v1/responses";
-    private static String apiKey = "";// TODO
+    private static String apiKey = "";
     private static String model = "gpt-4.1-mini";
 
     private static class Pair {
@@ -53,7 +53,6 @@ public class ChatGPT {
                 "  \"store\": true\n" +
                 "}";
 
-//        System.out.println(reqBody);
         return callGPT(reqBody);
 
     }
@@ -86,7 +85,7 @@ public class ChatGPT {
             br.close();
 
             // calls the method to extract the message.
-            return response.toString();
+            return extractMessageFromJSONResponse(String.valueOf(response));
 
             // prints the error message specifically
         } catch (IOException e) {
@@ -144,20 +143,41 @@ public class ChatGPT {
 
     }
 
-    public static String extractMessageFromJSONResponse(String response) {
-        int start = response.indexOf("content")+ 11;
+    public static String extractMessageFromJSONResponse(String json) {
+        // Locate the "text": " start
+        String key = "\"text\": \"";
+        int textStart = json.indexOf(key);
+        if (textStart == -1) {
+            System.out.println("Text key not found.");
+            return "Error";
+        }
 
-        int end = response.indexOf("\"", start);
+        textStart += key.length(); // Move past the key to the actual text value
+        int textEnd = json.indexOf("\"", textStart);
 
-        return response.substring(start, end);
+        // Handle escaped quotes (optional basic fix)
+        while (textEnd != -1 && json.charAt(textEnd - 1) == '\\') {
+            textEnd = json.indexOf("\"", textEnd + 1);
+        }
 
+        if (textEnd == -1) {
+            System.out.println("Text value not properly closed.");
+            return "Error";
+        }
+
+        String extractedText = json.substring(textStart, textEnd)
+                .replace("\\n", "\n")
+                .replace("\\\"", "\"");
+
+        return extractedText;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
-        String basePrompt = "Analyze the photo for any personal information about the user and their preferences and format your response by naming the type of information, followed by a colon, and then the information and then go the next line. For example, Favorite food: xxx, Best friend: xxx. If not please say 'N/A'   ";
+        String basePrompt = "Analyze the following images, looking for answers to the given security questions and corresponding answers. If you were able to make an approximation or guess that you believe could be accurate to any of the questions that matches at least somewhat with the provided answer, output the question that you could answer with your approximate answer, in the following example format: Q5: What's your high school best friend's name?\\nA5: Based on these (insert specific features) found in this image (insert image url), the answer is (insert name).\\nIf you can't discern anything, please just return 'N/A'. \\nThese are the provided questions/answers: ";
 
+        //
         // file initializations
         String imageURLS = "imageUrls.csv";
         String chatGPTresponses = "chatGPTresponses.csv";
@@ -166,17 +186,6 @@ public class ChatGPT {
         // website object for pi questions and user info
         Website security = new Website();
         String userInfo = security.userInfo();
-
-
-
-        // prompt chatgpt to analyze instagram photo for PI
-        System.out.println(chatGPT("Analyze the following images, looking for answers to the given security questions " +
-                "and corresponding answers. If you were able to make an approximation or guess that you believe could be accurate" +
-                " to any of the questions that matches at least somewhat with the provided answer, " +
-                "output the question that you could answer with your approximate answer, in the following example format: " +
-                "Q5: What's your high school best friend's name?\n " +
-                "A5: Based on these (insert specific features) found in this image (insert image url), the answers is (insert name).\n" +
-                "These are the provided questions/answers: " + userInfo));
 
         // read img urls from csv
         try (BufferedReader br = new BufferedReader(new FileReader(imageURLS))) {
@@ -194,7 +203,7 @@ public class ChatGPT {
             System.out.println("Error reading CSV inputs: " + e.getMessage());
             return;
         }
-        List<Pair> promptsTruncated = prompts.subList(0, 5);
+        List<Pair> promptsTruncated = prompts;
         // feed each url into chatgpt and store the responses into the new csv file for responses
         try (FileWriter csvWriter = new FileWriter(chatGPTresponses, true)) {
             for (Pair prompt : promptsTruncated) {

@@ -11,12 +11,13 @@ public class Website {
         collectUserInput();
         instagramUser();
 
-        private boolean isValidHandle(String handle) {
-            return handle != null && handle.matches("^[a-zA-Z0-9._]+$");
-        }
+
     }
 
-    public static void main(String[] args) {
+    private boolean isValidHandle(String handle) {
+        return handle != null && handle.matches("^[a-zA-Z0-9._]+$");
+    }
+    public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
         Website website = new Website();
 
@@ -46,7 +47,7 @@ public class Website {
     /**
      * Run ChatGPT analysis by calling the main method logic from ChatGPT class
      */
-    private void runChatGPTAnalysis() {
+    private void runChatGPTAnalysis() throws IOException {
         // Simply call the main method from ChatGPT class which handles everything
         String[] args = {}; // Empty args array
         ChatGPT.main(args);
@@ -120,8 +121,8 @@ public class Website {
             String answer = scan.nextLine().trim();
 
             // store q + a
-            answers.append("Q").append(i + 1).append(": ").append(questions[i]).append("\n");
-            answers.append("A").append(i + 1).append(": ").append(answer).append("\n\n");
+            answers.append("Q").append(i + 1).append(": ").append(questions[i]).append("\\n");
+            answers.append("A").append(i + 1).append(": ").append(answer).append("\\n\\n");
         }
 
         // store
